@@ -1,5 +1,4 @@
 import os
-import time
 import sys
 import shutil as shoot
 import customtkinter as ctk
@@ -92,9 +91,9 @@ def ui():
                 '.exe': 'Installers',
                 '.msi': 'Installers'
             }
-            n = 1
+
             for item in file_list:
-                source_path = os.path.join(source_folder, item)
+                # source_path = os.path.join(source_folder, item)
                 sort_folders = []
                 for extension, folder_name in categories.items():
                     sort_folders.append(folder_name)
@@ -102,18 +101,25 @@ def ui():
                     continue
                 # Get the file extension (e.g., '.py')
                 file_extension = os.path.splitext(item)[1]
+                file_n=os.path.splitext(item)[1]
 
-                if n == 1:
-                    # Get the category based on the file extension
-                    category = categories.get(file_extension, 'Misc')
-                    print(category)
 
-                    # Create the category folder if it doesn't exist
-                    category_folder = os.path.join(source_folder, category)
-                    os.makedirs(category_folder, exist_ok=True)
+                # Get the category based on the file extension
+                category = categories.get(file_extension, 'Misc')
+                print(category)
 
-                    # Move the file to the appropriate category folder
-                    shoot.move(os.path.join(source_folder, item), os.path.join(category_folder, item))
+                # Create the category folder if it doesn't exist
+                category_folder = os.path.join(source_folder, category)
+                os.makedirs(category_folder, exist_ok=True)
+
+                destination_file_path = os.path.join(category_folder, item)
+                if os.path.exists(destination_file_path):
+                    # Append a number to the filename to make it unique
+                    file_name, file_extension = os.path.splitext(item)
+                    new_item = f"{file_name}-copy{file_extension}"
+                    destination_file_path = os.path.join(category_folder, new_item)
+
+                    shoot.move(os.path.join(source_folder, item), destination_file_path)
             delete_frame()
 
         def next_b():
@@ -164,7 +170,7 @@ def ui():
         heading.pack(padx=10, pady=10, anchor='center')  # Use 'nw' anchor to position in the top-left corner
         check_state = ctk.BooleanVar()
         frame_o = tk.Frame(frame_h,background='#202020')
-        frame_o.pack(pady=(25, 10))
+        frame_o.pack(pady=(15, 10))
 
         # Create a button to trigger the folder dialog
         open_folder_button = ctk.CTkButton(frame_o, text="Organize folder", command=next_b)
