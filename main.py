@@ -291,7 +291,7 @@ def readme1(folder, wd1):
         elif folder == fol2:
             f.write(f"{folder} should consist all the utilities you might require")
         elif folder == fol4:
-            f.write(f"{folder} will consist all the folders that were there in downloads folder")
+            f.write(f"{folder} will consist all the folders that were there in downloads folder.")
 
 
 def creation():
